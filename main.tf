@@ -33,4 +33,4 @@ resource "aws_launch_template" "web_server_as" {
         id      = aws_launch_template.web_server_as.id
         version = "$Latest"
   }
-
+}
