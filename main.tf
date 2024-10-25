@@ -1,7 +1,8 @@
-resource "aws_launch_configuration" "web_server_as" {
-    image_id           = "ami-0195204d5dce06d99"
+resource "aws_launch_template" "web_server_as" {
+    name = "myproject"
+    image_id           = "ami-0ddc798b3f1a5117e"
     instance_type = "t2.micro"
-    key_name = "final"
+    key_name = "keypair-rc"
     security_groups = [aws_security_group.web_server.id]
 }
    
@@ -10,7 +11,7 @@ resource "aws_launch_configuration" "web_server_as" {
   resource "aws_elb" "web_server_lb"{
      name = "web-server-lb"
      security_groups = [aws_security_group.web_server.id]
-     subnets = ["subnet-0c42873ceef71b275", "subnet-01b9af9baf0cb7e1a"]
+     subnets = ["subnet-0f6c0bfc8082107ea", "subnet-0ba9b6c98a11af6cc"]
      listener {
       instance_port     = 8000
       instance_protocol = "http"
@@ -23,13 +24,13 @@ resource "aws_launch_configuration" "web_server_as" {
   }
 resource "aws_autoscaling_group" "web_server_asg" {
     name                 = "web-server-asg"
-    launch_configuration = aws_launch_configuration.web_server_as.name
+    launch_template = aws_launch_template.web_server_as.name
     min_size             = 1
     max_size             = 3
     desired_capacity     = 2
     health_check_type    = "EC2"
     load_balancers       = [aws_elb.web_server_lb.name]
-    availability_zones    = ["us-east-1b", "us-east-1d"] 
+    availability_zones    = ["us-east-1a", "us-east-1b"] 
     
   }
 
