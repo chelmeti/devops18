@@ -21,7 +21,7 @@ resource "aws_launch_template" "web_server_as" {
       Name = "terraform-elb"
     }
   }
-resource "aws_autoscaling_group" "web_server_asg" {
+ resource "aws_autoscaling_group" "web_server_asg" {
     name                 = "web-server-asg"
     min_size             = 1
     max_size             = 3
@@ -30,7 +30,7 @@ resource "aws_autoscaling_group" "web_server_asg" {
     load_balancers       = [aws_elb.web_server_lb.name]
     availability_zones    = ["us-east-1a", "us-east-1b"] 
     launch_template {
-        id = aws_launch_template.web_server_as.id
+        id      = aws_launch_template.web_server_as.id
         version = "$Latest"
   }
 
